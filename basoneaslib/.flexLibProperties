@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<flexLibProperties version="1">
+  <includeClasses>
+    <classEntry path="com.baseoneonline.flash.utils.logger.Logger"/>
+    <classEntry path="com.baseoneonline.flash.astar.AStarNode"/>
+    <classEntry path="com.baseoneonline.flash.utils.FPSMeter"/>
+    <classEntry path="com.baseoneonline.flash.utils.logger.LogEvent"/>
+    <classEntry path="com.baseoneonline.flash.utils.logger.LogLevel"/>
+    <classEntry path="com.baseoneonline.flash.utils.ShadowedTextField"/>
+    <classEntry path="com.baseoneonline.flash.utils.StopWatch"/>
+  </includeClasses>
+  <includeResources/>
+  <namespaceManifests/>
+</flexLibProperties>
