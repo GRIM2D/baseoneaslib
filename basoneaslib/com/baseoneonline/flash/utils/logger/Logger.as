@@ -19,12 +19,13 @@
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
-    along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
+    along with BaseOne Actionscript 3 Library.  If not, see <http://www.gnu.org/licenses/>.
 */
 package com.baseoneonline.flash.utils.logger
 {
 	import flash.events.EventDispatcher;
 
+	[Event(name="update", type="com.baseoneonline.flash.utils.logger.LogEvent")]
 	public class Logger extends EventDispatcher
 	{
 		
@@ -66,8 +67,10 @@ package com.baseoneonline.flash.utils.logger
 		private function fireLogEvent(n:String, level:int):void {
 			var e:LogEvent = new LogEvent(LogEvent.UPDATE);
 			e.level = level;
+			e.message = n;
+			e.levelString = levelStrings[level];
 			dispatchEvent(e);
-			if (enableTrace) trace(levelStrings[level]+n);
+			if (enableTrace) trace(e.levelString+n);
 		}
 		
 		public static function getInstance():Logger {

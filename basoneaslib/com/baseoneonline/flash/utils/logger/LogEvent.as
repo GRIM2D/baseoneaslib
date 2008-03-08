@@ -19,7 +19,7 @@
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
-    along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
+    along with BaseOne Actionscript 3 Library.  If not, see <http://www.gnu.org/licenses/>.
 */
 package com.baseoneonline.flash.utils.logger
 {
@@ -30,8 +30,9 @@ package com.baseoneonline.flash.utils.logger
 		
 		public static const UPDATE:String = "update";
 		
-		
+		public var message:String;
 		public var level:int;
+		public var levelString:String;
 		
 		public function LogEvent(type:String, bubbles:Boolean=false, cancelable:Boolean=false)
 		{
