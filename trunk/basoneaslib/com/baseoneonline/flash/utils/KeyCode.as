@@ -25,7 +25,7 @@
 package com.baseoneonline.flash.utils
 {
 	/**
-	 * 	Supplementing the flash Keyboard class.
+	 * 	Supplementing the flash Keyboard singleton class.
 	 * 
 	 */
 	public class KeyCode
