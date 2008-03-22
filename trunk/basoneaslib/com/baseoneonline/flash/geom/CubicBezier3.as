@@ -23,18 +23,17 @@
 */
 package com.baseoneonline.flash.geom
 {
-	import flash.geom.Point3;
 	
 	/**
 	 * 	A 3D bezier curve defined by four points.
 	 * 
 	 */
-	public class CubicBezier
+	public class CubicBezier3
 	{
-		private var p1:Point33;
-		private var p2:Point33;
-		private var p3:Point33;
-		private var p4:Point33;
+		private var p1:Point3;
+		private var p2:Point3;
+		private var p3:Point3;
+		private var p4:Point3;
 		
 		/**
 		 * 	
@@ -43,7 +42,7 @@ package com.baseoneonline.flash.geom
 		 * 	@param	p3	Second controlpoint
 		 * 	@param	p4	Second endpoint
 		 */
-		function CubicBezier(p1:Point3, p2:Point3, p3:Point3, p4:Point3)
+		function CubicBezier3(p1:Point3, p2:Point3, p3:Point3, p4:Point3)
 		{
 			this.p1 = p1;
 			this.p2 = p2;
@@ -65,7 +64,7 @@ package com.baseoneonline.flash.geom
 			var mu3:Number = mu*mu*mu;
 			
 			return new Point3(	mum13*p1.x + 3*mu*mum1*mum1*p2.x + 3*mu*mu*mum1*p3.x + mu3*p4.x,
-								mum13*p1.y + 3*mu*mum1*mum1*p2.y + 3*mu*mu*mum1*p3.y + mu3*p4.y
+								mum13*p1.y + 3*mu*mum1*mum1*p2.y + 3*mu*mu*mum1*p3.y + mu3*p4.y,
 								mum13*p1.z + 3*mu*mum1*mum1*p2.z + 3*mu*mu*mum1*p3.z + mu3*p4.z	);
 		}
 	}
