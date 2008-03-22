@@ -47,9 +47,11 @@ package com.baseoneonline.flash.utils
 			addChild(tf);
 
 			fmt = new TextFormat();
+			fmt.font = "sans";
+			fmt.bold = true;
 			fmt.color = 0xFFFFFF;
 
-			filters = [new DropShadowFilter(1,45,0,1,2,2,2)];
+			filters = [new DropShadowFilter(1,45,0,1,3,3,4)];
 		}
 		
 		public function setText(n:String):void
