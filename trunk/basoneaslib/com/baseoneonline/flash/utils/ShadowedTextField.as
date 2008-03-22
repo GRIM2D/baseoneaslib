@@ -24,6 +24,7 @@
 package com.baseoneonline.flash.utils
 {
 	import flash.display.Sprite;
+	import flash.filters.DropShadowFilter;
 	import flash.text.TextField;
 	import flash.text.TextFieldAutoSize;
 	import flash.text.TextFormat;
@@ -31,47 +32,31 @@ package com.baseoneonline.flash.utils
 	public class ShadowedTextField extends Sprite
 	{
 		
-		private var fgColor:uint = 0xFFFFFF;
-		private var bgColor:uint = 0x000000;
-		private var xoff:Number = 1;
-		private var yoff:Number = 1;
-		
-		private var tfFore:TextField;
-		private var tfBack:TextField;
-		private var fmtFore:TextFormat;
-		private var fmtBack:TextFormat;
+		private var tf:TextField;
+		private var fmt:TextFormat;
 		
 		public function ShadowedTextField()
 		{
 			mouseChildren = false;
 			mouseEnabled = false;
 
-			tfBack = new TextField();
-			tfBack.autoSize = TextFieldAutoSize.LEFT;
-			tfBack.selectable = false;
-			tfBack.x = xoff;
-			tfBack.y = yoff;
-			addChild(tfBack);
 			
-			tfFore = new TextField();
-			tfFore.autoSize = TextFieldAutoSize.LEFT;
-			tfFore.selectable = false;
-			addChild(tfFore);
+			tf = new TextField();
+			tf.autoSize = TextFieldAutoSize.LEFT;
+			tf.selectable = false;
+			addChild(tf);
 
-			fmtFore = new TextFormat();
-			fmtFore.color = fgColor;
+			fmt = new TextFormat();
+			fmt.color = 0xFFFFFF;
 
-			fmtBack = new TextFormat();
-			fmtBack.color = bgColor;
+			filters = [new DropShadowFilter(1,45,0,1,2,2,2)];
 		}
 		
 		public function setText(n:String):void
 		{
-			tfFore.text = n;
-			tfFore.setTextFormat(fmtFore);
+			tf.text = n;
+			tf.setTextFormat(fmt);
 
-			tfBack.text = n;
-			tfBack.setTextFormat(fmtBack);
 		}
 		
 	}
