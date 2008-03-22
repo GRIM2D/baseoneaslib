@@ -27,9 +27,6 @@ package com.baseoneonline.flash.utils
 	import flash.display.BitmapData;
 	import flash.display.Sprite;
 	import flash.events.Event;
-	import flash.text.TextField;
-	import flash.text.TextFieldAutoSize;
-	import flash.text.TextFormat;
 	import flash.utils.getTimer;
 	
 	/**
@@ -39,20 +36,28 @@ package com.baseoneonline.flash.utils
 	public class FPSMeter extends Sprite
 	{
 		
-		private var tf:TextField;
+		private var tf:ShadowedTextField;
 		private var bmp:BitmapData;
 		private var tbmp:BitmapData;
 
 		private var otime:int = 0;
 		
-		private var barWidth:int = 200;
-		private var barHeight:int = 13;
-		private var scrollWidth:int = 1;
+		private var barWidth:uint;
+		private var barHeight:uint = 16;
+		private var scrollWidth:int = 2;
+		private var updateInterval:uint;
+		private var count:uint = 0;
+		private var ms:uint = 0;
 		
-		public function FPSMeter()
+		/**
+		 * 
+		 * 	@param	updateInterval	The number of frames to wait before updating
+		 * 	@param	barWidth	The width of the graph.
+		 */
+		public function FPSMeter(updateInterval:uint=10, barWidth:uint=30)
 		{
-			super();
-			
+			this.updateInterval = updateInterval;
+			this.barWidth = barWidth;
 			createAssets();
 			addEventListener(Event.ENTER_FRAME, onEnterFrame);
 		}
@@ -61,44 +66,49 @@ package com.baseoneonline.flash.utils
 		{
 			bmp = new BitmapData(barWidth, barHeight, false, 0x00FF00);
 			addChild(new Bitmap(bmp));	
-			
 			tbmp = new BitmapData(scrollWidth,barHeight, false);
-			
-			tf = new TextField();
-			tf.autoSize = TextFieldAutoSize.LEFT;
-			tf.y = -4;
+			tf = new ShadowedTextField();
+			tf.x = barWidth;
+			tf.y = -3;
 			addChild(tf);
 		}
 		
 		
 		private function onEnterFrame(e:Event):void
 		{
-			var ntime:int = getTimer();
-			var ms:int = ntime - otime;
-			otime = ntime;
-			var fps:Number = 1000/ms;
-			
-			// Update the scroller
-			bmp.scroll(-scrollWidth,0);
-			var err:int = barHeight-Math.round((fps/stage.frameRate)*barHeight);
-			var x:int; 
-			var y:int;
-			for (x=barWidth-scrollWidth; x<barWidth; x++) {
-				for (y=0; y<err-1; y++) {
-					bmp.setPixel(x,y,0xFF5500);	
+			if (count < updateInterval) {
+				count++;
+			} else {
+				var d:uint = getTimer()-ms;
+				var msf:Number = d/updateInterval;
+				var fps:Number = 1000/msf;
+
+
+				// Update the scroller
+				bmp.scroll(-scrollWidth,0);
+				var err:int = barHeight-Math.round((fps/stage.frameRate)*barHeight);
+				var x:int; 
+				var y:int;
+				for (x=barWidth-scrollWidth; x<barWidth; x++) {
+					for (y=0; y<err-1; y++) {
+						bmp.setPixel(x,y,0xFF5500);	
+					}
+					for (y=err; y<barHeight; y++) {
+						bmp.setPixel(x,y,0x00FF00);
+					}
 				}
-				for (y=err; y<barHeight; y++) {
-					bmp.setPixel(x,y,0x00FF00);
-				}
+				
+				// Update text
+				tf.setText("ms "+msf.toFixed(1)+"  FPS: "+fps.toFixed(1)+"  /  "+stage.frameRate);
+
+				
+				// Reset
+				count = 0;
+				ms = getTimer();
+
+
 			}
 			
-			
-			
-			// Update text
-			tf.text = "ms: "+ms+" | fps: "+fps.toFixed(1)+" / "+stage.frameRate;
-			var fmt:TextFormat = new TextFormat();
-			fmt.font = "_sans";
-			tf.setTextFormat(fmt);
 			
 		}
 		
