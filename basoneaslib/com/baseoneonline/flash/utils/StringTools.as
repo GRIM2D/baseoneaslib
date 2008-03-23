@@ -26,11 +26,15 @@ package com.baseoneonline.flash.utils
 	public class StringTools
 	{
 		public static function getExtension(s:String):String {
-			return s.substring(s.lastIndexOf('.')+1,s.length);
+			var dot:int = s.lastIndexOf('.');
+			if (dot == -1) return '';
+			return s.substring(dot+1,s.length);
 		}
 		
 		public static function stripExtension(s:String):String {
-			return s.substring(0, s.lastIndexOf('.'));
+			var dot:int = s.lastIndexOf('.');
+			if (dot == -1) return s;
+			return s.substring(0, dot);
 		}
 	}
 }
