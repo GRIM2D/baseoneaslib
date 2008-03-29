@@ -29,12 +29,12 @@ package com.baseoneonline.flash.geom
 	 * 	A bezier curve defined by four points.
 	 * 
 	 */
-	public class CubicBezier
+	public class CubicBezier implements ICurve
 	{
-		private var p1:Point;
-		private var p2:Point;
-		private var p3:Point;
-		private var p4:Point;
+		public var p1:Point;
+		public var p2:Point;
+		public var p3:Point;
+		public var p4:Point;
 		
 		/**
 		 * 	
@@ -67,5 +67,56 @@ package com.baseoneonline.flash.geom
 			return new Point(	mum13*p1.x + 3*mu*mum1*mum1*p2.x + 3*mu*mu*mum1*p3.x + mu3*p4.x,
 								mum13*p1.y + 3*mu*mum1*mum1*p2.y + 3*mu*mu*mum1*p3.y + mu3*p4.y	);
 		}
+		
+		public function getPointAngle(mu:Number):Point {
+			if (mu<=0) return p1;
+			if (mu>=1) return p4;
+			
+			
+			
+			var m1:Point = Point.interpolate(p2,p1,mu);
+			var m2:Point = Point.interpolate(p3,p2,mu);
+			var m3:Point = Point.interpolate(p4,p3,mu);
+			
+			var q1:Point = Point.interpolate(m2,m1,mu);
+			var q2:Point = Point.interpolate(m3,m2,mu);
+			
+			var pa:Point = new Point(q2.x-q1.x, q2.y -q1.y);
+			
+			
+			var a:Number = Math.atan2(pa.y, pa.x);
+			
+			var p:Point = Point.interpolate(q2,q1,mu);
+			
+			return p;
+		}
+		
+		public function getOffsetPoint(mu:Number, offset:Number):Point {
+			if (mu<=0) mu=0;
+			if (mu>=1) mu=1;
+			
+			
+			
+			var m1:Point = Point.interpolate(p2,p1,mu);
+			var m2:Point = Point.interpolate(p3,p2,mu);
+			var m3:Point = Point.interpolate(p4,p3,mu);
+			
+			var q1:Point = Point.interpolate(m2,m1,mu);
+			var q2:Point = Point.interpolate(m3,m2,mu);
+			
+			var pa:Point = new Point(q2.x-q1.x, q2.y -q1.y);
+			
+			
+			var a:Number = -Math.atan2(pa.y, pa.x);
+			
+			
+			var p:Point = Point.interpolate(q2,q1,mu);
+			
+			var pp:Point = new Point(p.x+Math.sin(a)*offset, p.y+Math.cos(a)*offset);
+			
+			return pp;
+		}
+		
+		
 	}
 }
