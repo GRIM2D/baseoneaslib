@@ -1,6 +1,6 @@
 /*
 
-	FPSMeter
+	LogView
 
 	Copyright (c) 2008 B Korsmit
 
