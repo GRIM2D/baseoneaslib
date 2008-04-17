@@ -1,6 +1,6 @@
 /*
 
-	FPSMeter
+	KeyCode
 
 	Copyright (c) 2008 B Korsmit
 
