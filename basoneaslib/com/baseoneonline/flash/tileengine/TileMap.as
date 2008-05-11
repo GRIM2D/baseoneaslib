@@ -47,11 +47,12 @@ package com.baseoneonline.flash.tileengine
 		private var tilesetBitmap:Bitmap;
 		public var tilesetWidth:uint;
 		public var tilesetHeight:uint;
-		private var tileRect:Rectangle;
 		
 		function TileMap(w:uint, h:uint, tw:uint, th:uint) {
 			width = w;
 			height = h;
+			tileWidth = tw;
+			tileHeight = th;
 			
 			fgLayer = new TileLayer(w,h);
 			bgLayer = new TileLayer(w,h);
@@ -62,17 +63,26 @@ package com.baseoneonline.flash.tileengine
 			return tileset[tileID];
 		}
 		
+		public function setSize(w:uint, h:uint):void {
+			width = w;
+			height = h;
+			fgLayer.width = w;
+			fgLayer.height = h;
+			bgLayer.width = w;
+			bgLayer.height = h;
+			collision.width = w;
+			collision.height = h;
+		}
+		
 		public function setTilesize(w:uint, h:uint):void {
 			tileWidth = w;
 			tileHeight = h;
-			tileRect.width = w;
-			tileRect.height = h;
 			rebuildTileset();
 		}
 		
 		public function setTileset(b:Bitmap):void {
 			tilesetBitmap = b;
-			//rebuildTileset();
+			if (tilesetBitmap) rebuildTileset();
 		}
 		
 		public function getTilesetBitmap():Bitmap {
@@ -83,14 +93,15 @@ package com.baseoneonline.flash.tileengine
 			tilesetWidth = Math.floor(tilesetBitmap.width/tileWidth);
 			tilesetHeight = Math.floor(tilesetBitmap.height/tileHeight);
 			tileset = new Array(tilesetWidth*tilesetHeight);
+			var rect:Rectangle = new Rectangle(0,0,tileWidth,tileHeight);
 			var i:uint = 0;
 			var p:Point = new Point();
 			for (var y:uint=0; y<tilesetHeight; y++) {
 				for (var x:uint=0; x<tilesetWidth; x++) {
-					tileRect.x = x*tileWidth;
-					tileRect.y = y*tileHeight;
+					rect.x = x*tileWidth;
+					rect.y = y*tileHeight;
 					var bmp:BitmapData = new BitmapData(tileWidth,tileHeight);
-					bmp.copyPixels(tilesetBitmap.bitmapData, tileRect, p);  
+					bmp.copyPixels(tilesetBitmap.bitmapData, rect, p);  
 					tileset[i] = new Tile(i, bmp);
 					i++;
 				}

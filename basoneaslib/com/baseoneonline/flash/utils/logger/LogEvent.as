@@ -33,6 +33,7 @@ package com.baseoneonline.flash.utils.logger
 		public var message:String;
 		public var level:int;
 		public var levelString:String;
+		public var className:String;
 		
 		public function LogEvent(type:String, bubbles:Boolean=false, cancelable:Boolean=false)
 		{

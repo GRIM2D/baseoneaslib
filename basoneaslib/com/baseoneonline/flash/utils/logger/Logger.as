@@ -30,9 +30,11 @@ package com.baseoneonline.flash.utils.logger
 	{
 		
 		private static var instance:Logger;
+		private static var instances:Object = new Object();
 		private var filterLevel:int = LogLevel.DEBUG;
 		private var enableTrace:Boolean = true;
 		private var levelStrings:Array = ["DEBUG\t", "INFO\t", "WARN\t", "FATAL\t"];
+		private var className:String = "";
 		
 		public function Logger()
 		{
@@ -48,15 +50,15 @@ package com.baseoneonline.flash.utils.logger
 			enableTrace = b;
 		}
 		
-		public function debug(n:String):void {
+		public function debug(n:Object):void {
 			fireLogEvent(n, LogLevel.DEBUG); 
 		} 
 		
-		public function info(n:String):void {
+		public function info(n:Object):void {
 			fireLogEvent(n, LogLevel.INFO); 
 		}
 		
-		public function warn(n:String):void {
+		public function warn(n:Object):void {
 			fireLogEvent(n, LogLevel.WARN); 
 		}
 		
@@ -64,18 +66,39 @@ package com.baseoneonline.flash.utils.logger
 			fireLogEvent(n, LogLevel.FATAL); 
 		}
 		
-		private function fireLogEvent(n:String, level:int):void {
+		private function fireLogEvent(msg:Object, level:int):void {
+			var n:String;
+			if (msg) {
+				if (msg is String) {
+					n = msg as String;
+				} else {
+					n = msg.toString();
+				}
+			} else {
+				msg = "";
+			}
 			var e:LogEvent = new LogEvent(LogEvent.UPDATE);
 			e.level = level;
 			e.message = n;
 			e.levelString = levelStrings[level];
+			e.className = className;
+			
 			dispatchEvent(e);
-			if (enableTrace) trace(e.levelString+n);
+			for each(var l:Logger in instances) {
+				l.dispatchEvent(e);
+			}
+			if (enableTrace) trace(e.levelString+className+":: "+n);
 		}
 		
-		public static function getInstance():Logger {
-			if (!instance) instance = new Logger();
-			return instance;
+		
+		public static function getInstance(className:String=null):Logger {
+			if (className) {
+				if (!instances[className]) instances[className] = new Logger();
+				return instances[className];
+			} else {
+				if (!instance) instance = new Logger();
+				return instance;
+			}
 		}
 		
 	}

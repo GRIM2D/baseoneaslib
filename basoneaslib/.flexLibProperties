@@ -1,25 +1,36 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <flexLibProperties version="1">
   <includeClasses>
-    <classEntry path="com.baseoneonline.flash.astar.AStar"/>
-    <classEntry path="com.baseoneonline.flash.astar.AStarNode"/>
+    <classEntry path="com.baseoneonline.flash.durin.RemoteOperation"/>
+    <classEntry path="com.baseoneonline.flash.geom.Point3"/>
+    <classEntry path="com.baseoneonline.flash.utils.logger.Logger"/>
+    <classEntry path="com.baseoneonline.flash.utils.LogView"/>
+    <classEntry path="com.baseoneonline.flash.tileengine.CollisionLayer"/>
+    <classEntry path="com.baseoneonline.flash.durin.vo.MediaNode"/>
     <classEntry path="com.baseoneonline.flash.astar.IAStarSearchable"/>
     <classEntry path="com.baseoneonline.flash.geom.CubicBezier"/>
-    <classEntry path="com.baseoneonline.flash.geom.CubicBezier3"/>
-    <classEntry path="com.baseoneonline.flash.geom.ICurve"/>
     <classEntry path="com.baseoneonline.flash.geom.IntPoint"/>
-    <classEntry path="com.baseoneonline.flash.geom.NurbsCurve"/>
-    <classEntry path="com.baseoneonline.flash.geom.Point3"/>
-    <classEntry path="com.baseoneonline.flash.utils.FPSMeter"/>
-    <classEntry path="com.baseoneonline.flash.utils.KeyCode"/>
-    <classEntry path="com.baseoneonline.flash.utils.KeyHandler"/>
-    <classEntry path="com.baseoneonline.flash.utils.LogView"/>
-    <classEntry path="com.baseoneonline.flash.utils.ShadowedTextField"/>
-    <classEntry path="com.baseoneonline.flash.utils.StopWatch"/>
+    <classEntry path="com.baseoneonline.flash.durin.vo.MediaNodeTree"/>
+    <classEntry path="com.baseoneonline.flash.astar.AStar"/>
     <classEntry path="com.baseoneonline.flash.utils.StringTools"/>
+    <classEntry path="com.baseoneonline.flash.utils.FPSMeter"/>
+    <classEntry path="com.baseoneonline.flash.utils.ShadowedTextField"/>
+    <classEntry path="com.baseoneonline.flash.utils.KeyCode"/>
+    <classEntry path="com.baseoneonline.flash.geom.NurbsCurve"/>
+    <classEntry path="com.baseoneonline.flash.utils.KeyHandler"/>
+    <classEntry path="com.baseoneonline.flash.tileengine.ILayer"/>
+    <classEntry path="com.baseoneonline.flash.utils.NumberTools"/>
+    <classEntry path="com.baseoneonline.flash.tileengine.TileMap"/>
+    <classEntry path="com.baseoneonline.flash.astar.AStarNode"/>
     <classEntry path="com.baseoneonline.flash.utils.logger.LogEvent"/>
     <classEntry path="com.baseoneonline.flash.utils.logger.LogLevel"/>
-    <classEntry path="com.baseoneonline.flash.utils.logger.Logger"/>
+    <classEntry path="com.baseoneonline.flash.tileengine.Tile"/>
+    <classEntry path="com.baseoneonline.flash.utils.StopWatch"/>
+    <classEntry path="com.baseoneonline.flash.geom.ICurve"/>
+    <classEntry path="com.baseoneonline.flash.geom.CubicBezier3"/>
+    <classEntry path="com.baseoneonline.flash.tileengine.TileLayer"/>
+    <classEntry path="com.baseoneonline.flash.durin.ResultObject"/>
+    <classEntry path="com.baseoneonline.flash.durin.vo.MediaType"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests/>

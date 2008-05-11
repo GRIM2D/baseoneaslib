@@ -23,7 +23,7 @@
 */
 package com.baseoneonline.flash.tileengine
 {
-	public class CollisionLayer
+	public class CollisionLayer implements ILayer
 	{
 		
 		public var width:uint;
@@ -34,14 +34,19 @@ package com.baseoneonline.flash.tileengine
 		function CollisionLayer(w:uint, h:uint) {
 			width = w;
 			height = h;
-			data = new Array(width*height);
+			data = [];
 		}
 		
-		public function setCollision(x:uint, y:uint, col:uint):void {
-			data[width*y+x] = col;
+		public function setSize(w:uint, h:uint):void {
+			width = w;
+			height = h;
 		}
 		
-		public function getCollision(x:uint, y:uint):uint {
+		public function setTile(x:uint, y:uint, t:ITile):void {
+			data[width*y+x] = t;
+		}
+		
+		public function getTile(x:uint, y:uint):ITile {
 			return data[width*y+x];
 		}
 		
