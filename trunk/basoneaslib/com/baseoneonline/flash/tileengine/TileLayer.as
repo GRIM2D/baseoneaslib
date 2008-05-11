@@ -25,7 +25,7 @@ package com.baseoneonline.flash.tileengine
 {
 	import flash.display.BitmapData;
 	
-	public class TileLayer
+	public class TileLayer implements ILayer
 	{
 		
 		public var width:uint;
@@ -39,11 +39,16 @@ package com.baseoneonline.flash.tileengine
 			data = new Array(width*height);
 		}
 		
-		public function setTile(x:uint, y:uint, t:Tile):void {
+		public function setSize(w:uint, h:uint):void {
+			width = w;
+			height = h;
+		} 
+		
+		public function setTile(x:uint, y:uint, t:ITile):void {
 			data[width*y+x] = t;
 		}
 		
-		public function getTile(x:uint, y:uint):Tile {
+		public function getTile(x:uint, y:uint):ITile {
 			return data[width*y+x];
 		}
 		

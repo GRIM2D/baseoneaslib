@@ -25,16 +25,24 @@ package com.baseoneonline.flash.tileengine
 {
 	import flash.display.BitmapData;
 	
-	public class Tile
+	public class Tile implements ITile
 	{
 		
 		public var bmp:BitmapData;
-		public var id:uint;
+		private var _id:int;
 		
 		function Tile(id:uint, bmp:BitmapData)
 		{
 			this.id = id;
 			this.bmp = bmp;
+		}
+		
+		public function get id():int {
+			return _id;
+		}
+		
+		public function set id(n:int):void {
+			_id = n;
 		}
 
 	}
