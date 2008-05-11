@@ -25,16 +25,38 @@ package com.baseoneonline.flash.utils.logger
 {
 	import flash.events.Event;
 
+	/**
+	 * This event defines a single log message
+	 * 
+	 * @author bmod
+	 * 
+	 */
 	public class LogEvent extends Event
 	{
 		
 		public static const UPDATE:String = "update";
 		
+		/**
+		 * The message to be logged.
+		 */
 		public var message:String;
+		
+		/**
+		 * Importance level of this message.
+		 */
 		public var level:int;
+		
+		/**
+		 * Textual representation of the importance level.
+		 */
 		public var levelString:String;
+		
+		/**
+		 * Optional className to be transmitted with this message.
+		 */
 		public var className:String;
 		
+
 		public function LogEvent(type:String, bubbles:Boolean=false, cancelable:Boolean=false)
 		{
 			super(type, bubbles, cancelable);
