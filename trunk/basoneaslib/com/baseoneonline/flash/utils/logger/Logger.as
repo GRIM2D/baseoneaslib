@@ -36,10 +36,10 @@ package com.baseoneonline.flash.utils.logger
 		private var levelStrings:Array = ["DEBUG\t", "INFO\t", "WARN\t", "FATAL\t"];
 		private var className:String = "";
 		
-		public function Logger()
+		public function Logger(className:String=null)
 		{
 			super();
-			
+			if (className) this.className = className;
 		}
 		
 		public function setFilterLevel(n:int):void {
@@ -83,17 +83,15 @@ package com.baseoneonline.flash.utils.logger
 			e.levelString = levelStrings[level];
 			e.className = className;
 			
-			dispatchEvent(e);
-			for each(var l:Logger in instances) {
-				l.dispatchEvent(e);
-			}
+			if (instance) instance.dispatchEvent(e);
 			if (enableTrace) trace(e.levelString+className+":: "+n);
 		}
 		
 		
+		
 		public static function getInstance(className:String=null):Logger {
 			if (className) {
-				if (!instances[className]) instances[className] = new Logger();
+				if (!instances[className]) instances[className] = new Logger(className);
 				return instances[className];
 			} else {
 				if (!instance) instance = new Logger();
