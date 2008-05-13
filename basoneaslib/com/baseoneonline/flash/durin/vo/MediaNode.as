@@ -5,21 +5,21 @@ package com.baseoneonline.flash.durin.vo
 	public class MediaNode
 	{
 		
-		public var id:int;
+		public var id:int = 0;
 		public var parentid:int;
-		public var order:int;
+		public var order:int = 0;
 		
-		public var label:String;
-		public var description:String;
-		public var text:String;
+		public var label:String = "[ROOT]";
+		public var description:String = "";
+		public var text:String = "";
 		
-		public var location:String;
-		public var preview:String;
-		public var thumbnail:String;
+		public var location:String = "";
+		public var preview:String = "";
+		public var thumbnail:String = "";
 		
-		public var type:String;
+		public var type:String = MediaType.NODE;
 		
-		public var visible:Boolean;
+		public var visible:Boolean = true;
 		
 		public var parent:MediaNode;
 		public var children:Array;
@@ -38,10 +38,6 @@ package com.baseoneonline.flash.durin.vo
 				preview = o.preview;
 				thumbnail = o.thumbnail;
 				type = o.type;
-			} else {
-				id = 0;
-				label = "[ROOT]";
-				visible = true;
 			}
 		}
 		
@@ -61,6 +57,15 @@ package com.baseoneonline.flash.durin.vo
 			}
 		}
 		
+		
+		public function toString():String {
+			var s:String = "[MediaNode ";
+			s += "id='"+id+"', ";
+			s += "label='"+label+"', ";
+			s += "parentid='"+parentid+"'";
+			s += "]";
+			return s;
+		}
 		
 	}
 }
