@@ -29,34 +29,59 @@ package com.baseoneonline.flash.astar
 	
 	public class AStar
 	{
-		// The dimensions of the entire map
+
+		/**
+		 * Width of the map to be searched 
+		 */
 		private var width:int;
+		
+		/**
+		 * Height of the map to be searched 
+		 */
 		private var height:int;
 		
-		// Our start and goal nodes
+		/**
+		 * Initial node from which we try to find a path 
+		 */
 		private var start:AStarNode;
+		/**
+		 * The node to find a path to 
+		 */
 		private var goal:AStarNode;
 		
-		// must be two-dimensional array containing AStarNodes;
+		/**
+		 *	Two dimensional array containing AStarNodes 
+		 */
 		private var map:Array;
 		
-		// open set: nodes to be considered
+		/**
+		 * Open set of nodes to be considered for traversal 
+		 */
 		public var open:Array;
 		
-		// closed set: nodes not to consider anymore
+		/**
+		 * The closed set of nodes not to be considered for traversal 
+		 */
 		public var closed:Array;
 		
-		// This variable is not necessary,
-		// it's just for debugging purposes,
-		// delete it and all references to it.
+		/**
+		 *	For debugging purposes only 
+		 */
 		public var visited:Array = [];
 		
-		// Euclidian is better, but slower 
+		/**
+		 * The distance function to be used, either distEuclidian (slower but more accurate) or distManhattan (faster, less accurate)
+		 */
 		private var dist:Function = distEuclidian;
-		//private var dist:Function = distManhattan;	
 	
-		// Diagonal moves span a larger distance
+		/**
+		 * Default cost for one horizontal or vertical step 
+		 */
 		private static const COST_ORTHOGONAL:Number = 1;
+
+		/**
+		 * Default cost for one diagonal step 
+		 */
 		private static const COST_DIAGONAL:Number = 1.414;
 		
 		
@@ -79,10 +104,6 @@ package com.baseoneonline.flash.astar
 		
 		
 		/**
-		 * 
-		 * 
-		 * 		FIND PATH
-		 * 
 		 * 	Find the path!
 		 * 
 		 * 	@return	An array of IntPoints describing the resulting path
@@ -198,8 +219,6 @@ package com.baseoneonline.flash.astar
 		
 		
 		/**
-		 * 
-		 * 		NEIGHBORS
 		 * 
 		 * 	Return a node's neighbors, IF they're walkable
 		 * 
