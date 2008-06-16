@@ -38,7 +38,7 @@ package com.baseoneonline.flash.utils.logger
 		/**
 		 * The message to be logged.
 		 */
-		public var message:String;
+		[Bindable] public var message:String;
 		
 		/**
 		 * Importance level of this message.

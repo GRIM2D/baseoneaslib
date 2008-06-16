@@ -46,7 +46,7 @@ package com.baseoneonline.flash.durin.vo
 		public var visible:Boolean = true;
 		
 		public var parent:MediaNode;
-		public var children:ArrayCollection;
+		public var children:ArrayCollection = new ArrayCollection();
 		
 		function MediaNode(o:Object=null)
 		{
@@ -82,7 +82,7 @@ package com.baseoneonline.flash.durin.vo
 		}
 		
 		public function hasChildren():Boolean {
-			return (children != null && children.length > 0);
+			return children.length > 0;
 		}
 		
 		public function toString():String {
