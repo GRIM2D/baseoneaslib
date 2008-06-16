@@ -21,6 +21,8 @@ RemoteOperation.as
     along with baseone_flashLib  If not, see <http://www.gnu.org/licenses/>.
 */
 package com.baseoneonline.flash.durin {
+	import com.baseoneonline.flash.utils.logger.Logger;
+	
 	import flash.events.AsyncErrorEvent;
 	import flash.events.ErrorEvent;
 	import flash.events.Event;
@@ -125,12 +127,16 @@ package com.baseoneonline.flash.durin {
 		 * 
 		 */
 		private function onNetStatus(e:NetStatusEvent):void {
-			//Logger.getInstance().warn("Net Status");
-			var s:String = "";
-			for (var k:String in e.info) {
-				s += k+": \t"+e.info[k]+"\n";
+			// Only signal when an error occurs
+			// somehow netstatus events always fire
+			if (e.info.level == "error") {
+				var s:String = "";
+				for (var k:String in e.info) {
+					s += k+": \t"+e.info[k]+"\n";
+				}
+				//Logger.getInstance().warn("Net Status\n"+s);
+				fireStatus("NetStatus: "+s);
 			}
-			fireStatus("NetStatus: "+s);
 		}
 
 		/**

@@ -47,5 +47,9 @@ package com.baseoneonline.flash.utils
 			return n * Math.PI/180;
 		}
 		
+		public static function randRange(min:Number, max:Number):Number {
+			return min+((max-min)*Math.random());
+		}
+		
 	}
 }
