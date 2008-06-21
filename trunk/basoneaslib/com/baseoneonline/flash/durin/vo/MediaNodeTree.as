@@ -33,11 +33,12 @@ package com.baseoneonline.flash.durin.vo
 		[Bindable]
 		public var list:Array;
 		
-		function MediaNodeTree(sourceData:Array=null, includeInvisible:Boolean=true) {
+		function MediaNodeTree(sourceData:Array, includeInvisible:Boolean=true, rootNodeName:String=null) {
 			if (sourceData) setObjectData(sourceData, includeInvisible);
+			if (rootNodeName) rootNode.label = rootNodeName;
 		}
 
-		public function setObjectData(a:Array, includeInvisible:Boolean=true):void {
+		private function setObjectData(a:Array, includeInvisible:Boolean=true):void {
 			list = [];
 			for each(var o:Object in a) {
 				var node:MediaNode = new MediaNode(o);
@@ -53,6 +54,7 @@ package com.baseoneonline.flash.durin.vo
 			var b:Array = [];
 			for (var i:int=0; i<a.length; i++) {
 				var n:MediaNode = a[i];
+				if (!parentNode) throw new Error("Should not be null");
 				if (n.parentid == parentNode.id) {
 					
 					n.parent = parentNode;

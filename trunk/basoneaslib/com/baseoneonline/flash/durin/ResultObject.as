@@ -59,6 +59,10 @@ package com.baseoneonline.flash.durin
 			this.message = message;
 			this.data = data;
 		}
+		
+		public function toString():String {
+			return "[ResultObject]\nSuccess:\t"+success+"\nMessage:\t"+message;
+		}
 
 	}
 }
