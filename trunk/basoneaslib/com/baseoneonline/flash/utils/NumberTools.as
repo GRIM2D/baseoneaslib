@@ -25,12 +25,30 @@ package com.baseoneonline.flash.utils
 	public class NumberTools
 	{
 		
-		public static function limit(n:Number, min:Number, max:Number):Number {
+		/**
+		 * 	Radians to degrees,
+		 * 	multiply to convert.
+		 */
+		public static const RAD_TO_DEG:Number = 180/Math.PI;
+		
+		/**
+		 * 	Degrees to radians,
+		 * 	multply to convert.
+		 */
+		public static const DEG_TO_RAD:Number = Math.PI/180; 
+		
+		/**
+		 * Keep a number between the limits. (Clamp)
+		 */
+		public static function limit(n:Number, min:Number=0, max:Number=1):Number {
 			if (n < min) n = min;
 			if (n > max) n = max;
 			return n;
 		}
 		
+		/**
+		 * 	Keep a number within the limits, but keep the remainder as offset.
+		 */
 		public static function wrap(n:Number, min:Number, max:Number):Number {
 			//trace(n+" : "+min+" : "+max);
 			var d:Number = max-min;
@@ -38,6 +56,7 @@ package com.baseoneonline.flash.utils
 			while (n < min) n += d;
 			return n;
 		}
+		
 		
 		public static function radToDeg(n:Number):Number {
 			return n * 180/Math.PI;
@@ -47,6 +66,9 @@ package com.baseoneonline.flash.utils
 			return n * Math.PI/180;
 		}
 		
+		/**
+		 * Return a random number between the limits.
+		 */
 		public static function randRange(min:Number, max:Number):Number {
 			return min+((max-min)*Math.random());
 		}
