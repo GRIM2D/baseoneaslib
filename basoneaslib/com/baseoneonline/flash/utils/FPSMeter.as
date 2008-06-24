@@ -63,7 +63,7 @@ package com.baseoneonline.flash.utils
 		
 		private function createAssets():void
 		{
-			bmp = new BitmapData(barWidth, barHeight, false, 0x00FF00);
+			bmp = new BitmapData(barWidth, barHeight, false, 0x000000);
 			addChild(new Bitmap(bmp));	
 			tbmp = new BitmapData(scrollWidth,barHeight, false);
 			tf = new ShadowedTextField();
