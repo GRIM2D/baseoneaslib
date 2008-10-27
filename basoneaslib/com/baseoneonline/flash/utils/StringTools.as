@@ -35,5 +35,9 @@ package com.baseoneonline.flash.utils
 			if (dot == -1) return s;
 			return s.substring(0, dot);
 		}
+		
+		public static function isEmailAddress(n:String):Boolean {
+			return (n.match(/^[a-z0-9!#$%&'*+\/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+\/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/m) != null);
+		} 
 	}
 }
