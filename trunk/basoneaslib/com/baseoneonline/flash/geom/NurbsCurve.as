@@ -47,6 +47,8 @@ package com.baseoneonline.flash.geom
 			calculateKnots();
 		}
 		
+		
+		
 		/**
 		 * 	I made it, but i don't know how it works anymore. (But it works)
 		 * 
