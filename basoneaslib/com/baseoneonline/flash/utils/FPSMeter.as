@@ -35,6 +35,8 @@ package com.baseoneonline.flash.utils
 	public class FPSMeter extends Sprite
 	{
 		
+		public static const TOP_RIGHT:String = "TR";
+		
 		private var tf:ShadowedTextField;
 		private var bmp:BitmapData;
 		private var tbmp:BitmapData;
@@ -48,17 +50,22 @@ package com.baseoneonline.flash.utils
 		private var count:uint = 0;
 		private var ms:uint = 0;
 		
+		private var attachToStage:Boolean;
+		private var attachPosition:String;
+		
 		/**
 		 * 
 		 * 	@param	updateInterval	The number of frames to wait before updating
 		 * 	@param	barWidth	The width of the graph.
 		 */
-		public function FPSMeter(updateInterval:uint=10, barWidth:uint=30)
+		public function FPSMeter(updateInterval:uint=30, barWidth:uint=30, 
+				attachToStage:Boolean=true, attachPosition:String=TOP_RIGHT)
 		{
 			this.updateInterval = updateInterval;
 			this.barWidth = barWidth;
-			createAssets();
-			addEventListener(Event.ENTER_FRAME, onEnterFrame);
+			this.attachToStage = attachToStage;
+			this.attachPosition = attachPosition;
+			addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
 		}
 		
 		private function createAssets():void
@@ -105,13 +112,28 @@ package com.baseoneonline.flash.utils
 				count = 0;
 				ms = getTimer();
 
-
+				onStageResize();
 			}
 			
 			
 		}
 		
+		private function onAddedToStage(e:Event):void {
+			createAssets();
+			
+			stage.addEventListener(Event.RESIZE, onStageResize);
+			onStageResize();
+			addEventListener(Event.ENTER_FRAME, onEnterFrame);
+		}
 		
+		private function onStageResize(e:Event=null):void {
+			if (attachToStage) {
+				if (TOP_RIGHT == attachPosition) {
+					x = stage.stageWidth - width;
+					y = 0;
+				} 
+			}
+		}
 		
 		
 		
