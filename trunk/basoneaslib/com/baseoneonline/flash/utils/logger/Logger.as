@@ -83,7 +83,7 @@ package com.baseoneonline.flash.utils.logger
 			e.className = className;
 			
 			if (instance) instance.dispatchEvent(e);
-			if (enableTrace) trace(e.levelString+className+":: "+n);
+			if (enableTrace) trace(e.levelString+className+"\n"+n);
 		}
 		
 		

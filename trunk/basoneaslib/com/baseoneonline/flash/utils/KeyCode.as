@@ -66,5 +66,9 @@ package com.baseoneonline.flash.utils
 		public static const KEY_7:uint = 55;
 		public static const KEY_8:uint = 56;
 		public static const KEY_9:uint = 57;
+		
+		public static const KEY_TILDE:uint = 192;
+		public static const KEY_LBRACKET:uint = 219;
+		public static const KEY_RBRACKET:uint = 221;
 	}
 }
