@@ -23,6 +23,7 @@ Logger.as
 package com.baseoneonline.flash.utils.logger
 {
 	import flash.events.EventDispatcher;
+	import flash.utils.getQualifiedClassName;
 
 	[Event(name="update", type="com.baseoneonline.flash.utils.logger.LogEvent")]
 	public class Logger extends EventDispatcher
@@ -65,8 +66,23 @@ package com.baseoneonline.flash.utils.logger
 			fireLogEvent(n, LogLevel.FATAL); 
 		}
 		
+		public static function debug(source:Object, n:String):void {
+			getInstance(source).debug(n);
+		}
+		public static function info(source:Object, n:String):void {
+			getInstance(source).info(n);
+		}
+		public static function warn(source:Object, n:String):void {
+			getInstance(source).warn(n);
+		}
+		public static function fatal(source:Object, n:String):void {
+			getInstance(source).fatal(n);
+		}
+		
+		
 		private function fireLogEvent(msg:Object, level:int):void {
 			var n:String;
+			if (!n) n = "NULL";
 			if (msg) {
 				if (msg is String) {
 					n = msg as String;
@@ -83,13 +99,19 @@ package com.baseoneonline.flash.utils.logger
 			e.className = className;
 			
 			if (instance) instance.dispatchEvent(e);
+			for each(var log:Logger in instances) {
+				log.dispatchEvent(e);
+			}
 			if (enableTrace) trace(e.levelString+className+"\n"+n);
 		}
 		
 		
 		
-		public static function getInstance(className:String=null):Logger {
-			if (className) {
+		public static function getInstance(id:*=null):Logger {
+			if (id) {
+				var className:String;
+				if (id is String) className = id;
+				else className = getQualifiedClassName(id);
 				if (!instances[className]) instances[className] = new Logger(className);
 				return instances[className];
 			} else {
