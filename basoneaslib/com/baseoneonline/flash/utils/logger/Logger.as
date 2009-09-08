@@ -62,20 +62,20 @@ package com.baseoneonline.flash.utils.logger
 			fireLogEvent(n, LogLevel.WARN); 
 		}
 		
-		public function fatal(n:String):void {
+		public function fatal(n:Object):void {
 			fireLogEvent(n, LogLevel.FATAL); 
 		}
 		
-		public static function debug(source:Object, n:String):void {
+		public static function debug(source:Object, n:Object):void {
 			getInstance(source).debug(n);
 		}
-		public static function info(source:Object, n:String):void {
+		public static function info(source:Object, n:Object):void {
 			getInstance(source).info(n);
 		}
-		public static function warn(source:Object, n:String):void {
+		public static function warn(source:Object, n:Object):void {
 			getInstance(source).warn(n);
 		}
-		public static function fatal(source:Object, n:String):void {
+		public static function fatal(source:Object, n:Object):void {
 			getInstance(source).fatal(n);
 		}
 		
