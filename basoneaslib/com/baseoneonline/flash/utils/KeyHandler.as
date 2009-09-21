@@ -25,22 +25,20 @@ package com.baseoneonline.flash.utils
 {
 	import flash.display.Stage;
 	import flash.events.KeyboardEvent;
-	import flash.system.System;
 	
 	public class KeyHandler
 	{
+		private static var instance:KeyHandler;
 		
-		
-		private var stage:Stage;
+		public var stage:Stage;
 		
 		private var keysDown:Array = [];
 		
-		function KeyHandler(stage:Stage) {
-			this.stage = stage;
-			setEnabled(true);
+		function KeyHandler() {
+			
 		}
 		
-		public function setEnabled(b:Boolean):void {
+		public function set enabled(b:Boolean):void {
 			if (b) {
 				stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
 				stage.addEventListener(KeyboardEvent.KEY_UP, onKeyUp);
@@ -58,8 +56,13 @@ package com.baseoneonline.flash.utils
 			keysDown[e.keyCode] = null;
 		}
 		
-		public function isDown(code:uint):Boolean {
+		public function isDown(code:uint, repeat:Boolean=true):Boolean {
 			return (keysDown[code] != null);
+		}
+		
+		public static function get inst():KeyHandler {
+			if (!instance) instance = new KeyHandler();
+			return instance;
 		}
 
 	}

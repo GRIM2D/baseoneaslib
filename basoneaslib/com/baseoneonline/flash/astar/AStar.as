@@ -39,49 +39,18 @@ package com.baseoneonline.flash.astar
 		 */
 		private var height:int;
 		
-		/**
-		 * Initial node from which we try to find a path 
-		 */
-		private var start:AStarNode;
-		/**
-		 * The node to find a path to 
-		 */
-		private var goal:AStarNode;
-		
-		/**
-		 *	Two dimensional array containing AStarNodes 
-		 */
 		private var map:Array;
 		
-		/**
-		 * Open set of nodes to be considered for traversal 
-		 */
 		public var open:Array;
 		
-		/**
-		 * The closed set of nodes not to be considered for traversal 
-		 */
 		public var closed:Array;
 		
-		/**
-		 *	For debugging purposes only 
-		 */
 		public var visited:Array = [];
 		
-		/**
-		 * The distance function to be used, either distEuclidian (slower but more accurate) or distManhattan (faster, less accurate)
-		 */
-		private var dist:Function = distEuclidian;
+		private var dist:Function = distManhattan;
 	
-		/**
-		 * Default cost for one horizontal or vertical step 
-		 */
 		private static const COST_ORTHOGONAL:Number = 1;
-
-		/**
-		 * Default cost for one diagonal step 
-		 */
-		private static const COST_DIAGONAL:Number = 1.414;
+		private static const COST_DIAGONAL:Number = COST_ORTHOGONAL*Math.sqrt(2);
 		
 		
 		/**
@@ -90,15 +59,21 @@ package com.baseoneonline.flash.astar
 		 * @param	start	Guess what? The starting position!
 		 * @param	goal	This is where we want to end up.
 		 */
-		function AStar(map:IAStarSearchable, start:IntPoint, goal:IntPoint)
+		function AStar(map:IAStarSearchable)
 		{
-			width = map.getWidth();
-			height = map.getHeight();
-			
-			this.start = new AStarNode(start.x, start.y);
-			this.goal = new AStarNode(goal.x, goal.y); 
-			this.map = createMap(map);
-			
+			setMap(map);
+		}
+		
+		public function setMap(m:IAStarSearchable):void {
+			width = m.getWidth();
+			height = m.getHeight();
+			map = new Array(width);
+			for (var x:int=0; x<width; x++) {
+				if (!map[x]) map[x] = new Array(height);
+				for (var y:int=0; y<height; y++) {
+					map[x][y] = new AStarNode(x,y, m.isWalkable(x,y));
+				}
+			}
 		}
 		
 		
@@ -108,84 +83,77 @@ package com.baseoneonline.flash.astar
 		 * 	@return	An array of IntPoints describing the resulting path
 		 * 
 		 */
-		public function solve():Array
+		public function solve(startPoint:IntPoint, goalPoint:IntPoint):Array
 		{
-			trace("Starting to solve: "+start+" to "+goal);
 			open = new Array();
 			closed = new Array();
 			visited = new Array();
 			
+			var start:AStarNode = map[startPoint.x][startPoint.y];
+			var goal:AStarNode = map[goalPoint.x][goalPoint.y];
 			
-			var node:AStarNode = start;
-			node.h = dist(goal);
-			open.push(node);
+			open.push(start);
+			start.g = 0;
+			start.h = dist(start,goal);
+			start.f = start.h;
+			start.parent = null;			
 			
-			var solved:Boolean = false;
-			var i:int = 0;
-			
-			
-			// Ok let's start
-			while(!solved) {
-				
-				// This line can actually be removed
-				if (i++ > 10000) throw new Error("Overflow");
-				
-				// Sort open list by cost
-				open.sortOn("f",Array.NUMERIC);
-				if (open.length <= 0) break;
-				node = open.shift();
-				closed.push(node);
-				
-				// Could it be true, are we there?
-				if (node.x == goal.x && node.y == goal.y) {
-					// We found a solution!
-					solved = true;
-					break;
-				}
-				
-				for each (var n:AStarNode in neighbors(node)) {
-					
-					if (!hasElement(open,n) && !hasElement(closed,n)) {
-						open.push(n);
-						n.parent = node;
-						n.h = dist(n);
-						n.g = node.g;
-					} else {
-						var f:Number = n.g + node.g + n.h;
-						if (f < n.f) {
-							n.parent = node;
-							n.g = node.g;
-						}
+			// Loop until there are no more nodes to search
+			while(open.length > 0) {
+				// Find lowest f in open
+				var f:Number = Number.POSITIVE_INFINITY;
+				var x:AStarNode;
+				for (var i:int=0; i<open.length; i++) {
+					if (open[i].f < f) {
+						x = open[i];
+						f = x.f;
 					}
-					visit (n);
 				}
 				
+				// Solution found, return solution
+				if (x == goal) return createSolution(goal);
 				
-			}
-
-			// The loop was broken,
-			// see if we found the solution
-			if (solved) {
-				trace("Solved");
-				// We did! Format the data for use.
-				var solution:Array = new Array();
-				// Start at the end...
-				solution.push(new IntPoint(node.x, node.y));
-				// ...walk all the way to the start to record where we've been...
-				while (node.parent && node.parent!=start) {
-					node = node.parent;
-					solution.push(new IntPoint(node.x, node.y));
+				// Close current node
+				open.splice(open.indexOf(x),1);
+				closed.push(x);
+				
+				for each (var y:AStarNode in neighbors(x)) {
+					
+					if (-1 != closed.indexOf(y))
+						continue;
+					
+					var g:Number = x.g + y.travelCost;
+					var better:Boolean = false;
+					
+					if (-1 == open.indexOf(y)) {
+						open.push(y);
+						//visit(y);
+						better = true;
+					} else if (g < y.g) {
+						better = true;
+					}
+					if (better) {
+						y.parent = x;
+						y.g = g;
+						y.h = dist(y,goal);
+						y.f = y.g + y.h;
+					}
+					
 				}
-				// ...and add our initial position.
-				solution.push(new IntPoint(node.x, node.y));
 				
-				return solution;
-			} else {
-				// No solution found... :(
-				// This might be something else instead
-				// (like an array with only the starting position)
-				return null;
 			}
+			// No solution found, return empty path
+			return [];				
+		}
+		
+		private function createSolution(n:AStarNode):Array {
+			var solution:Array = [];
+			var nn:AStarNode = n;
+			while(nn.parent) {
+				solution.push(new IntPoint(nn.x, nn.y));
+				nn = nn.parent;
+			}
+			return solution;
 		}
 		
 		/**
@@ -202,8 +170,7 @@ package com.baseoneonline.flash.astar
 		/**
 		 * 	Faster, more inaccurate heuristic method
 		 */
-		private function distManhattan(n1:AStarNode, n2:AStarNode=null):Number {
-			if (n2 == null) n2 = goal;
+		private function distManhattan(n1:AStarNode, n2:AStarNode):Number {
 			return Math.abs(n1.x-n2.x)+Math.abs(n1.y-n2.y);
 		}
 		
@@ -211,8 +178,7 @@ package com.baseoneonline.flash.astar
 		 * 	Slower but much better heuristic method. Actually,
 		 * 	this returns just the distance between 2 points.
 		 */
-		private function distEuclidian(n1:AStarNode, n2:AStarNode=null):Number {
-			if (n2 == null) n2 = goal;
+		private function distEuclidian(n1:AStarNode, n2:AStarNode):Number {
 			return Math.sqrt(Math.pow((n1.x-n2.x),2)+Math.pow((n1.y-n2.y),2));
 		}
 		
@@ -228,7 +194,7 @@ package com.baseoneonline.flash.astar
 			var x:int = node.x;
 			var y:int = node.y;
 			var n:AStarNode;
-			var a:Array = [];
+			var a:Array = new Array(8);
 			
 			
 			// N
@@ -236,7 +202,7 @@ package com.baseoneonline.flash.astar
 				
 				n = map[x-1][y];
 				if (n.walkable) {
-					n.g += COST_ORTHOGONAL;
+					n.travelCost = COST_ORTHOGONAL;
 					a.push(n);
 				}
 			}
@@ -244,7 +210,7 @@ package com.baseoneonline.flash.astar
 			if (x < width-1) {
 				n = map[x+1][y];
 				if (n.walkable) {
-					n.g += COST_ORTHOGONAL;
+					n.travelCost = COST_ORTHOGONAL;
 					a.push(n);
 				}
 			} 
@@ -252,7 +218,7 @@ package com.baseoneonline.flash.astar
 			if (y > 0) {
 				n = map[x][y-1];
 				if (n.walkable) {
-					n.g += COST_ORTHOGONAL;
+					n.travelCost = COST_ORTHOGONAL;
 					a.push(n);
 				}
 			}
@@ -260,7 +226,7 @@ package com.baseoneonline.flash.astar
 			if (y < height-1) {
 				n = map[x][y+1];
 				if (n.walkable) {
-					n.g += COST_ORTHOGONAL;
+					n.travelCost = COST_ORTHOGONAL;
 					a.push(n);
 				}
 			}
@@ -275,7 +241,7 @@ package com.baseoneonline.flash.astar
 					&& map[x-1][y].walkable 
 					&& map[x][y-1].walkable
 				) {						
-					n.g += COST_DIAGONAL;
+					n.travelCost = COST_DIAGONAL;
 					a.push(n);
 				}
 			}
@@ -286,7 +252,7 @@ package com.baseoneonline.flash.astar
 					&& map[x+1][y].walkable 
 					&& map[x][y-1].walkable
 				) {
-					n.g += COST_DIAGONAL;
+					n.travelCost = COST_DIAGONAL;
 					a.push(n);
 				}
 			}
@@ -297,7 +263,7 @@ package com.baseoneonline.flash.astar
 					&& map[x-1][y].walkable 
 					&& map[x][y+1].walkable
 				) {
-					n.g += COST_DIAGONAL;
+					n.travelCost = COST_DIAGONAL;
 					a.push(n);
 				}
 			}
@@ -308,7 +274,7 @@ package com.baseoneonline.flash.astar
 					&& map[x+1][y].walkable
 					&& map[x][y+1].walkable
 				) {
-					n.g += COST_DIAGONAL;
+					n.travelCost = COST_DIAGONAL;
 					a.push(n);
 				}
 			}
@@ -317,80 +283,6 @@ package com.baseoneonline.flash.astar
 			return a;
 			
 		}
-		
-		
-		
-		
-		
-		
-		
-		/**
-		 * 		CREATE MAP
-		 * 
-		 * Create a map with cost and heuristic values for each tile
-		 * 
-		 */
-		private function createMap(map:IAStarSearchable):Array
-		{
-			var a:Array = new Array(width);
-			for (var x:int=0; x<width; x++) {
-				a[x] = new Array(height);
-				for (var y:int=0; y<height; y++) {
-					var node:AStarNode = new AStarNode(x,y,map.isWalkable(x,y));
-					a[x][y] = node;
-				}
-			}
-			
-			return a;
-		}
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		/**
-		 * 		HAS ELEMENT
-		 * 
-		 * Checks if a given array contains the object specified.
-		 */
-		private static function hasElement(a:Array, e:Object):Boolean
-		{
-			for each(var o:Object in a) {
-				if (o == e) return true;
-			}
-			return false;
-		}
-		
-		
-		
-		
-		
-		
-		
-		/**
-		 * 		REMOVE FROM ARRAY
-		 * 
-		 * Remove an element from an array
-		 */
-		private static function removeFromArray(a:Array, e:Object):Boolean
-		{
-			for (var i:int=0; i<a.length; i++) {
-				if (a[i] == e) {
-					a.splice(i,1);
-					return true;
-				}
-			}
-			return false;
-		}
-		
-	
-		
-		
 		
 	}
 
