@@ -39,16 +39,42 @@ package com.baseoneonline.flash.astar
 		 */
 		private var height:int;
 		
+		/**
+		 * 	Out copy of the user's map.
+		 */
 		private var map:Array;
 		
-		public var open:Array;
+		/**
+		 * 	The user's map, just keeping a reference
+		 * 	in case the user wants to update.
+		 */
+		private var userMap:IAStarSearchable;
 		
-		public var closed:Array;
+		/**
+		 *	Nodes to be considered
+		 */
+		private var open:Array;
 		
+		/**
+		 * 	Nodes not to consider anymore
+		 */
+		private var closed:Array;
+		
+		/**
+		 * 	For debugging, can be omitted.
+		 */
 		public var visited:Array = [];
 		
-		private var dist:Function = distManhattan;
-	
+		/**
+		 * 	Our distance function, for flexibility.
+		 * 	Inline your favourite for speed.
+		 */
+		public var distanceFunction:Function = distManhattan;
+		
+		/**
+		 * 	We're using a square map with diagonal movement,
+		 * 	precalculate the relative cost of the diagonal move.
+		 */
 		private static const COST_ORTHOGONAL:Number = 1;
 		private static const COST_DIAGONAL:Number = COST_ORTHOGONAL*Math.sqrt(2);
 		
@@ -56,22 +82,36 @@ package com.baseoneonline.flash.astar
 		/**
 		 * 
 		 * @param 	map		The map to be searched, will not be modified
-		 * @param	start	Guess what? The starting position!
-		 * @param	goal	This is where we want to end up.
+		 * 
 		 */
 		function AStar(map:IAStarSearchable)
 		{
 			setMap(map);
 		}
 		
+		/**
+		 * 
+		 * 	Set the map to be searched. The map will not be altered,
+		 * 	an internal copy will be used to search it.
+		 * 
+		 */
 		public function setMap(m:IAStarSearchable):void {
-			width = m.getWidth();
-			height = m.getHeight();
+			userMap = m;
+			updateMap();
+		}
+		
+		/**
+		 * 	Use if map has changed, reconstructs
+		 * 	internal copy of the map.
+		 */
+		public function updateMap():void {
+			width = userMap.getWidth();
+			height = userMap.getHeight();
 			map = new Array(width);
 			for (var x:int=0; x<width; x++) {
 				if (!map[x]) map[x] = new Array(height);
 				for (var y:int=0; y<height; y++) {
-					map[x][y] = new AStarNode(x,y, m.isWalkable(x,y));
+					map[x][y] = new AStarNode(x,y, userMap.isWalkable(x,y));
 				}
 			}
 		}
@@ -94,7 +134,7 @@ package com.baseoneonline.flash.astar
 			
 			open.push(start);
 			start.g = 0;
-			start.h = dist(start,goal);
+			start.h = distanceFunction(start,goal);
 			start.f = start.h;
 			start.parent = null;			
 			
@@ -127,7 +167,7 @@ package com.baseoneonline.flash.astar
 					
 					if (-1 == open.indexOf(y)) {
 						open.push(y);
-						//visit(y);
+						visit(y); // DEBUG: REMOVE
 						better = true;
 					} else if (g < y.g) {
 						better = true;
@@ -135,7 +175,7 @@ package com.baseoneonline.flash.astar
 					if (better) {
 						y.parent = x;
 						y.g = g;
-						y.h = dist(y,goal);
+						y.h = distanceFunction(y,goal);
 						y.f = y.g + y.h;
 					}
 					
@@ -170,7 +210,7 @@ package com.baseoneonline.flash.astar
 		/**
 		 * 	Faster, more inaccurate heuristic method
 		 */
-		private function distManhattan(n1:AStarNode, n2:AStarNode):Number {
+		public static function distManhattan(n1:AStarNode, n2:AStarNode):Number {
 			return Math.abs(n1.x-n2.x)+Math.abs(n1.y-n2.y);
 		}
 		
@@ -178,7 +218,7 @@ package com.baseoneonline.flash.astar
 		 * 	Slower but much better heuristic method. Actually,
 		 * 	this returns just the distance between 2 points.
 		 */
-		private function distEuclidian(n1:AStarNode, n2:AStarNode):Number {
+		public static function distEuclidian(n1:AStarNode, n2:AStarNode):Number {
 			return Math.sqrt(Math.pow((n1.x-n2.x),2)+Math.pow((n1.y-n2.y),2));
 		}
 		
