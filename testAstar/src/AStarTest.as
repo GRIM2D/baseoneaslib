@@ -38,7 +38,7 @@ package {
 		}
 
 		private function onPointChanged(e:MapEditorEvent=null):void {
-			var path:Array = astar.solve(editor.startPos, editor.goalPos);
+			var path:Array = astar.findPath(editor.startPos, editor.goalPos);
 			editor.drawPath(path);
 			editor.drawVisited(astar.visited);
 		}

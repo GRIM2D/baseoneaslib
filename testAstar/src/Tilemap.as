@@ -23,7 +23,6 @@ package
 				data[x] = new Array(h);
 				for (var y:int=0; y<h; y++) {
 					data[x][y] = new Tile(Math.random() > .1);
-					trace(data[x][y].cost);
 				}
 			}
 		}
