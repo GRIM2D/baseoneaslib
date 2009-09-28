@@ -186,10 +186,13 @@ package
 		 */
 		private function swapWall(recordCost:Boolean=false):void {
 			var ip:IntPoint = screenToGrid(new Point(mouseX, mouseY));
-			var t:Tile = map.getTile(ip);
-			if (recordCost) paintCost = (t.cost == -1) ? 0 : -1;
-			t.cost = paintCost; 
-			redrawBG(spriteBG.graphics);
+			if (ip.x >= 0 && ip.x < map.getWidth()
+				&& ip.y >= 0 && ip.y < map.getHeight()) {
+				var t:Tile = map.getTile(ip);
+				if (recordCost) paintCost = (t.cost == -1) ? 0 : -1;
+				t.cost = paintCost; 
+				redrawBG(spriteBG.graphics);
+			}
 		}
 		
 		/**
