@@ -58,7 +58,7 @@ package com.baseoneonline.flash.astar
 		/**
 		 * 	Nodes not to consider anymore
 		 */
-		private var closed:Array;
+		public var closed:Array;
 		
 		/**
 		 * 	For debugging, can be omitted.
@@ -123,7 +123,7 @@ package com.baseoneonline.flash.astar
 		 * 	@return	An array of IntPoints describing the resulting path
 		 * 
 		 */
-		public function solve(startPoint:IntPoint, goalPoint:IntPoint):Array
+		public function findPath(startPoint:IntPoint, goalPoint:IntPoint):Array
 		{
 			open = new Array();
 			closed = new Array();
@@ -151,7 +151,7 @@ package com.baseoneonline.flash.astar
 				}
 				
 				// Solution found, return solution
-				if (x == goal) return createSolution(goal);
+				if (x == goal) return reconstructPath(goal);
 				
 				// Close current node
 				open.splice(open.indexOf(x),1);
@@ -183,10 +183,21 @@ package com.baseoneonline.flash.astar
 				
 			}
 			// No solution found, return empty path
+			var min:Number = Number.POSITIVE_INFINITY;
+			var ng:AStarNode;
+			for each(var n:AStarNode in closed) {
+				var dist:Number = distanceFunction(goal, n);
+				if (dist < min) {
+					min = dist;
+					ng = n;
+				}
+			}
+			var altPath:Array = reconstructPath(ng);
+			return reconstructPath(ng);
 			return [];				
 		}
 		
-		private function createSolution(n:AStarNode):Array {
+		private function reconstructPath(n:AStarNode):Array {
 			var solution:Array = [];
 			var nn:AStarNode = n;
 			while(nn.parent) {
