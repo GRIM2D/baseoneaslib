@@ -17,5 +17,9 @@ package com.baseoneonline.flash.astar
 			return cost != -1;
 		}
 		
+		public override function toString():String {
+			return "[TileNode x:"+x+", y:"+y+", index:"+index+", cost:"+cost+"]";
+		}
+		
 	}
 }
