@@ -128,7 +128,7 @@ package com.baseoneonline.flash.astar
 				solution.push(n);
 				n = parent[n];
 			}
-			return solution;
+			return solution.reverse();
 		}
 		
 		
