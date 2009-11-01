@@ -39,6 +39,8 @@ package com.baseoneonline.flash.astar
 		private var open:Vector.<int>;
 		private var closed:Vector.<int>;
 		
+		private var goalReached:Boolean = false;
+		
 		public function AStar(g:Graph) {
 			setGraph(g);
 		}
@@ -58,6 +60,9 @@ package com.baseoneonline.flash.astar
 		}
 		
 		public function solve(start:int, goal:int):Vector.<int> {
+			
+			goalReached = false;
+			
 			open = new Vector.<int>();
 			closed = new Vector.<int>();
 			
@@ -81,7 +86,10 @@ package com.baseoneonline.flash.astar
 					}
 				}
 				
-				if (x == goal) return createPath(goal, start);
+				if (x == goal) {
+					goalReached = true;
+					return createPath(goal, start);
+				}
 				
 				open.splice(open.indexOf(x), 1);
 				closed.push(x);
@@ -108,6 +116,8 @@ package com.baseoneonline.flash.astar
 				}
 			}
 			
+			
+			
 			// No solution found, return shortest alternative
 			var min:Number = Number.POSITIVE_INFINITY;
 			var ng:int = -1;
@@ -120,6 +130,10 @@ package com.baseoneonline.flash.astar
 			}
 			return createPath(ng, start);
 			
+		}
+		
+		public function hasReachedGoal():Boolean {
+			return goalReached;
 		}
 		
 		private function createPath(n:int, start:int):Vector.<int> {
