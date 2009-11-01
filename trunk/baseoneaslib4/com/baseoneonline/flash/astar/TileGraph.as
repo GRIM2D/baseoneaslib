@@ -6,7 +6,7 @@ package com.baseoneonline.flash.astar
 	
 	
 
-	public class TileGraph implements Graph
+	public class TileGraph implements Graph	
 	{
 		
 		
@@ -36,6 +36,14 @@ package com.baseoneonline.flash.astar
 					i++;
 				}
 			}
+		}
+		
+		public function setWalkable(x:int, y:int, walkable:Boolean):void {
+			data[x][y].cost = walkable ? 0 : -1;
+		}
+		
+		public function getTileIndex(x:int, y:int):int {
+			return data[x][y].index;
 		}
 		
 		public function getTile(index:int):TileNode {
