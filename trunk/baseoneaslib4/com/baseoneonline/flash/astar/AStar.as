@@ -81,7 +81,7 @@ package com.baseoneonline.flash.astar
 					}
 				}
 				
-				if (x == goal) return createPath(goal);
+				if (x == goal) return createPath(goal, start);
 				
 				open.splice(open.indexOf(x), 1);
 				closed.push(x);
@@ -118,16 +118,17 @@ package com.baseoneonline.flash.astar
 					ng = n;
 				}
 			}
-			return createPath(ng);
+			return createPath(ng, start);
 			
 		}
 		
-		private function createPath(n:int):Vector.<int> {
+		private function createPath(n:int, start:int):Vector.<int> {
 			var solution:Vector.<int> = new Vector.<int>();
 			while (parent[n] != -1) {
 				solution.push(n);
 				n = parent[n];
 			}
+			solution.push(start);
 			return solution.reverse();
 		}
 		
