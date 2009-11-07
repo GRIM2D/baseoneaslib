@@ -1,5 +1,5 @@
 /*
-IntPoint.as
+Point3.as
 
 	Copyright (c) 2008 Bas Korsmit
 
@@ -22,39 +22,54 @@ IntPoint.as
 */
 package com.baseoneonline.flash.geom
 {
+
+	
+	
 	/**
-	 * 	Simple integer point implementation
-	 * 	
+	 * 
+	 * 	Defines a 3 dimensional point.
 	 * 
 	 */
-	public class IntPoint
+	public class Vec3f
 	{
 		
-		public var x:int;
-		public var y:int;
+		public var x:Number;
+		public var y:Number;
+		public var z:Number;
 		
-		function IntPoint(x:int=0, y:int=0)
+		public function Vec3f(x:Number=0, y:Number=0, z:Number=0)
 		{
 			this.x = x;
 			this.y = y;
+			this.z = z;
 		}
 		
-		
-		public function add(p:IntPoint):void
-		{
-			x += p.x;
-			y += p.y;
+		public function set length(n:Number):void {
+			// Sorry, read only.
 		}
 		
-		public function addNew(p:IntPoint):IntPoint {
-			return new IntPoint(x+p.x, y+p.y);
+		public function get length():Number {
+			return Math.sqrt(x*x+y*y+z*z);
+		}
+		
+		public function add(v:Vec3f):Vec3f {
+			return new Vec3f(x+v.x, y+v.y, z+v.z);
+		}
+		
+		public function clone():Vec3f {
+			return new Vec3f(x,y,z);
+		}
+		
+		public function equals(p:Vec3f):Boolean {
+			return p.x==x && p.y==y && p.z==z;
+		}
+		
+		public static function interpolate(p1:Vec3f, p2:Vec3f, f:Number):Vec3f {
+			return new Vec3f(	p1.x+((p2.x-p1.x)*f),
+								p1.y+((p2.y-p1.y)*f),
+								p1.z+((p2.z-p1.z)*f));
 		}
 		
 
-		public function toString():String
-		{
-			return "IntPoint("+x+", "+y+")";
-		}
-				
 	}
 }
