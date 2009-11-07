@@ -12,5 +12,10 @@ package com.baseoneonline.flash.geom
 			this.x = x;
 			this.y = y;
 		}
+		
+		public function toString():String {
+			return "[Vec2i x:"+x+", y:"+y+"]";
+		}
+		
 	}
 }
