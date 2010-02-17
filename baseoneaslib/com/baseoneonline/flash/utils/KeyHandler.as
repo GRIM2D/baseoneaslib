@@ -33,6 +33,7 @@ package com.baseoneonline.flash.utils
 		public var stage:Stage;
 		
 		private var keysDown:Array = [];
+		private var keysWereDown:Array = [];
 		
 		function KeyHandler() {
 			
@@ -53,11 +54,21 @@ package com.baseoneonline.flash.utils
 		}
 
 		private function onKeyUp(e:KeyboardEvent):void {
-			keysDown[e.keyCode] = null;
+			keysDown[e.keyCode] = false;
+			keysWereDown[e.keyCode] = false;
 		}
 		
 		public function isDown(code:uint, repeat:Boolean=true):Boolean {
-			return (keysDown[code] != null);
+			if (keysDown[code]) {
+				if (repeat) {
+					return true;
+				} else {
+					if (keysWereDown[code]) return false;
+					keysWereDown[code] = true;
+					return true;
+				}
+			}
+			return false;
 		}
 		
 		public static function get inst():KeyHandler {
