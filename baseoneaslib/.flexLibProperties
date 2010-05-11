@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<flexLibProperties version="1">
+<flexLibProperties includeAllClasses="false" version="1">
   <includeClasses>
     <classEntry path="com.baseoneonline.flash.astar.AStar"/>
     <classEntry path="com.baseoneonline.flash.astar.AStarNode"/>
@@ -11,9 +11,6 @@
     <classEntry path="com.baseoneonline.flash.geom.IntPoint"/>
     <classEntry path="com.baseoneonline.flash.geom.NurbsCurve"/>
     <classEntry path="com.baseoneonline.flash.geom.Point3"/>
-    <classEntry path="com.baseoneonline.flash.simpleParticle2D.Particle"/>
-    <classEntry path="com.baseoneonline.flash.simpleParticle2D.ParticleEvent"/>
-    <classEntry path="com.baseoneonline.flash.simpleParticle2D.ParticleSystem"/>
     <classEntry path="com.baseoneonline.flash.utils.FPSMeter"/>
     <classEntry path="com.baseoneonline.flash.utils.KeyCode"/>
     <classEntry path="com.baseoneonline.flash.utils.KeyHandler"/>
@@ -25,6 +22,7 @@
     <classEntry path="com.baseoneonline.flash.utils.logger.LogEvent"/>
     <classEntry path="com.baseoneonline.flash.utils.logger.LogLevel"/>
     <classEntry path="com.baseoneonline.flash.utils.logger.Logger"/>
+    <classEntry path="com.baseoneonline.flash.utils.FastMath"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests/>

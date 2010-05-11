@@ -26,7 +26,8 @@ package com.baseoneonline.flash.geom
 	
 	public interface ICurve
 	{
-		function getPoint(mu:Number):Point;
-		function getOffsetPoint(mu:Number, offset:Number):Point;
+		function getPoint(mu:Number, store:Point=null):Point;
+		function getCV(i:int):Point;
+		function getCVCount():int;
 	}
 }

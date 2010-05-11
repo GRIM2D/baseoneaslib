@@ -11,7 +11,7 @@ package com.baseoneonline.flash.geom {
 	 * @author bask
 	 * 
 	 */
-	public class NurbsCurve {
+	public class NurbsCurve implements ICurve {
 		
 		
 		private var pts:Array;
@@ -126,7 +126,7 @@ package com.baseoneonline.flash.geom {
 		}
 		
 		
-		public function getNumCVs():int {
+		public function getCVCount():int {
 			return pts.length;
 		}
 		

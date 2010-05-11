@@ -30,10 +30,8 @@ package com.baseoneonline.flash.geom
 	 */
 	public class CubicBezier implements ICurve
 	{
-		public var p1:Point;
-		public var p2:Point;
-		public var p3:Point;
-		public var p4:Point;
+
+		private var cv:Array;
 		
 		/**
 		 * 	
@@ -44,10 +42,7 @@ package com.baseoneonline.flash.geom
 		 */
 		function CubicBezier(p1:Point, p2:Point, p3:Point, p4:Point)
 		{
-			this.p1 = p1;
-			this.p2 = p2;
-			this.p3 = p3;
-			this.p4 = p4;
+			cv = [p1, p2, p3, p4];
 		}
 		
 		/**
@@ -56,26 +51,28 @@ package com.baseoneonline.flash.geom
 		 * 	@param	mu	Position on curve Value from 0 to 1
 		 * 	@return	A curve point.
 		 */
-		public function getPoint(mu:Number):Point {
-			if (mu<=0) return p1;
-			if (mu>=1) return p4;
+		public function getPoint(mu:Number, store:Point=null):Point {
+			if (!store) store = new Point();
+			if (mu<=0) return cv[0];
+			if (mu>=1) return cv[3];
 			var mum1:Number = 1-mu;
 			var mum13:Number = mum1*mum1*mum1;
 			var mu3:Number = mu*mu*mu;
 			
-			return new Point(	mum13*p1.x + 3*mu*mum1*mum1*p2.x + 3*mu*mu*mum1*p3.x + mu3*p4.x,
-								mum13*p1.y + 3*mu*mum1*mum1*p2.y + 3*mu*mu*mum1*p3.y + mu3*p4.y	);
+			store.x = mum13*cv[0].x + 3*mu*mum1*mum1*cv[1].x + 3*mu*mu*mum1*cv[2].x + mu3*cv[3].x;
+			store.y = mum13*cv[0].y + 3*mu*mum1*mum1*cv[1].y + 3*mu*mu*mum1*cv[2].y + mu3*cv[3].y;
+			return store;
 		}
 		
 		public function getPointAngle(mu:Number):Point {
-			if (mu<=0) return p1;
-			if (mu>=1) return p4;
+			if (mu<=0) return cv[0];
+			if (mu>=1) return cv[3];
 			
 			
 			
-			var m1:Point = Point.interpolate(p2,p1,mu);
-			var m2:Point = Point.interpolate(p3,p2,mu);
-			var m3:Point = Point.interpolate(p4,p3,mu);
+			var m1:Point = Point.interpolate(cv[1],cv[0],mu);
+			var m2:Point = Point.interpolate(cv[2],cv[1],mu);
+			var m3:Point = Point.interpolate(cv[3],cv[2],mu);
 			
 			var q1:Point = Point.interpolate(m2,m1,mu);
 			var q2:Point = Point.interpolate(m3,m2,mu);
@@ -86,7 +83,6 @@ package com.baseoneonline.flash.geom
 			var a:Number = Math.atan2(pa.y, pa.x);
 			
 			var p:Point = Point.interpolate(q2,q1,mu);
-			
 			return p;
 		}
 		
@@ -96,9 +92,9 @@ package com.baseoneonline.flash.geom
 			
 			
 			
-			var m1:Point = Point.interpolate(p2,p1,mu);
-			var m2:Point = Point.interpolate(p3,p2,mu);
-			var m3:Point = Point.interpolate(p4,p3,mu);
+			var m1:Point = Point.interpolate(cv[1],cv[0],mu);
+			var m2:Point = Point.interpolate(cv[2],cv[1],mu);
+			var m3:Point = Point.interpolate(cv[3],cv[2],mu);
 			
 			var q1:Point = Point.interpolate(m2,m1,mu);
 			var q2:Point = Point.interpolate(m3,m2,mu);
@@ -116,6 +112,13 @@ package com.baseoneonline.flash.geom
 			return pp;
 		}
 		
+		public function getCV(i:int):Point {
+			return cv[i];
+		}
+		
+		public function getCVCount():int {
+			return 4;
+		}
 		
 	}
 }
